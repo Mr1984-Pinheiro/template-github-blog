@@ -10,6 +10,10 @@ export const ProfileContainer = styled.section`
   padding: 2rem 2.5rem;
   display: flex;
   gap: 2rem;
+
+  @media (max-width: 724px) {
+    flex-direction: column;
+  }
 `;
 
 export const ProfilePicture = styled.img`
@@ -17,6 +21,8 @@ export const ProfilePicture = styled.img`
   height: 9.25rem;
   border-radius: 8px;
   object-fit: cover;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 export const ProfileDetails = styled.div`
@@ -35,6 +41,10 @@ export const ProfileDetails = styled.div`
       color: ${({ theme }) => theme.colors["base-title"]};
       line-height: 130%;
     }
+  }
+
+  p {
+    margin-bottom: 1rem;
   }
 
   ul {
