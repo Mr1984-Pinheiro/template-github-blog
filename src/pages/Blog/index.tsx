@@ -44,7 +44,7 @@ export function Blog() {
   return (
     <>
       <Profile />
-      <SearchInput />
+      <SearchInput postsLength={posts.length} getPosts={getPosts} />
       {isLoading ? (
         <Spinner />
       ) : (
