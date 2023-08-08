@@ -32,5 +32,6 @@ export const ExternalLinkContainer = styled.a<ExternalLinkProps>`
     variant === "iconLeft" &&
     css`
       flex-direction: row-reverse;
+      cursor: pointer;
     `}
 `;

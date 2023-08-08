@@ -10,7 +10,7 @@ export function Post() {
   //   const formattedDate = relativeDateFormatter(post.created_at);
 
   return (
-    <PostContainer>
+    <PostContainer to="/post/1">
       <div>
         <strong>Javascript data types and data structures</strong>
         <span>Há 1 dia</span>
