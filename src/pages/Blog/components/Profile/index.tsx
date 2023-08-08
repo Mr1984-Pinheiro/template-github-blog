@@ -3,45 +3,81 @@ import { ProfileContainer, ProfileDetails, ProfilePicture } from "./styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faBuilding, faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import { useCallback, useEffect, useState } from "react";
+import { api } from "../../../../lib/axios";
+import { Spinner } from "../../../../components/Spinner";
+
+const username = import.meta.env.VITE_GITHUB_USERNAME;
+
+interface ProfileData {
+  login: string;
+  bio: string;
+  avatar_url: string;
+  html_url: string;
+  name: string;
+  company?: string;
+  followers: number;
+}
 
 export function Profile() {
+  const [profileData, setProfileData] = useState<ProfileData>(
+    {} as ProfileData
+  );
+  const [isLoading, setIsLoading] = useState(true);
+
+  const getProfileData = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const response = await api.get(`/users/${username}`);
+
+      setProfileData(response.data);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    getProfileData();
+  }, [getProfileData]);
+
   return (
-    <>
-      <ProfileContainer>
-        <ProfilePicture src="https://github.com/Mr1984-Pinheiro.png" />
+    <ProfileContainer>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <ProfilePicture src={profileData.avatar_url} />
 
-        <ProfileDetails>
-          <header>
-            <h1>Carlos Pinheiro</h1>
+          <ProfileDetails>
+            <header>
+              <h1>{profileData.name}</h1>
 
-            <ExternalLink text="Github" href="#" />
-          </header>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis illo
-            quibusdam corrupti aspernatur dolorum beatae a nostrum dolore in
-            ipsam voluptates.
-          </p>
-          <ul>
-            <li>
-              <FontAwesomeIcon icon={faGithub} />
-              {/* {profileData.login} */}
-              Mr1984-Pinheiro
-            </li>
-
-            <li>
-              <FontAwesomeIcon icon={faBuilding} />
-              {/* {profileData.company} */}
-              Autonomo
-            </li>
-
-            <li>
-              <FontAwesomeIcon icon={faUserGroup} />
-              {/* {profileData.followers} seguidores */}
-              123 seguidores
-            </li>
-          </ul>
-        </ProfileDetails>
-      </ProfileContainer>
-    </>
+              <ExternalLink
+                text="Github"
+                href={profileData.html_url}
+                target="_blank"
+              />
+            </header>
+            <p>{profileData.bio}</p>
+            <ul>
+              <li>
+                <FontAwesomeIcon icon={faGithub} />
+                {profileData.login}
+              </li>
+              {profileData?.company && (
+                <li>
+                  <FontAwesomeIcon icon={faBuilding} />
+                  {profileData.company}
+                </li>
+              )}
+              <li>
+                <FontAwesomeIcon icon={faUserGroup} />
+                {profileData.followers} seguidores
+              </li>
+            </ul>
+          </ProfileDetails>
+        </>
+      )}
+    </ProfileContainer>
   );
 }
