@@ -13,14 +13,22 @@ export const PostContentContainer = styled.section`
 
   h1,
   h2,
-  h3 {
+  h3,
+  h4 {
     color: ${({ theme }) => theme.colors["brand-blue"]};
   }
 
-  ul, ol {
+  ul {
     list-style: inherit;
     padding-left: 1.5rem;
   }
+
+  ol {    
+    padding-left: 1.5rem;
+  }
+
+  a {
+    color: ${({ theme }) => theme.colors["brand-blue"]};  }
 
   pre {
     background: ${({ theme }) => theme.colors["base-post"]};
